@@ -53,7 +53,7 @@ while True:
         print time.ctime(),'Connection from:', addr
         print 'Refresh...'
         event, timestamp = getNotifications()
-        txString = str(event[15:-16])+'\r'+time.strftime('%H:%M:%S d.%d/%m-%Y', timestamp)+'\r'
+        txString = str(event[15:-16])+'\r'+time.strftime('%d/%m-%Y', timestamp)+'\r'+time.strftime('%H:%M:%S', timestamp)+'\r'
         conn.send(txString)#+'\n')  # echo
         print 'TX:', txString
         print 'Client disconnected.'
