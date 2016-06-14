@@ -3,12 +3,16 @@
 
 #include <ESP8266WiFi.h>
 
-const char* ssid     = "notReallyAWifi";
-const char* password = "getOuttaHereYouSexyHackerYou";
+void getIt();
 
-const char* host = "odin.dk";
+const char* ssid     = "ddlabwifi";
+const char* password = "balddbaldd";
+
+const char* host = "bropdox.moore.dk";
 
 void setup() {
+
+  WiFi.persistent(false); //avoid weirdness
   Serial.begin(115200);
   delay(10);
 
@@ -30,57 +34,52 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
+	getIt(); //første gang er gratis
+
 }
 
-int value = 0;
-
+unsigned long lastGet = 0;
+unsigned long loopDelay = 60000; //every minute
 void loop() {
 
-  delay(60000); //every minute
-  
-  int linecounter=0;
+  if(millis()>lastGet+loopDelay) getIt();
+  lastGet = millis();
+
+}
+
+void getIt()
+{
   //String vindchillString;
   //float vindchill;
-  //String line="";
+  int linecounter=0;
+  String lines[2]="";
 
   Serial.print("connecting to ");
   Serial.println(host);
 
   // Use WiFiClient class to create TCP connections
   WiFiClient client;
-  const int httpPort = 80;
+  const int httpPort = 666;
   if (!client.connect(host, httpPort)) {
     Serial.println("connection failed");
     return;
   }
 
-  // We now create a URI for the request
-  String url = "/RSS/RSS.aspx?beredskabsID=1110";
-
-  Serial.print("Requesting URL: ");
-  Serial.println(url);
-
-  // This will send the request to the server
-  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
-               "Host: " + host + "\r\n" +
-               "Connection: close\r\n\r\n");
-  delay(10);
+  delay(1500);
 
   // Read all the lines of the reply from server and print them to Serial
   while(client.available()){
-    line = client.readStringUntil('\r');
-    linecounter++;
-    serial.println(line);
-    //if(linecounter==31) vindchillString=line.substring(53,58);  //magic numbers galore :P
+    lines[linecounter++] = client.readStringUntil('\r');
+    Serial.println(lines[linecounter-1]);
   }
 
-  if(line!="")
+  if(lines[0]!="")
   {
-  //vindchill=vindchillString.toFloat();
-  //Serial.println("String: " + String(vindchillString));
-  //Serial.println("float: " + String(vindchill));
+  Serial.println("DATA!!");
   }
 
   Serial.println();
   Serial.println("closing connection");
+
 }
