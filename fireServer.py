@@ -31,7 +31,7 @@ def getNotifications():
 
 print time.ctime(),"startup!"
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '62.212.66.171'
 TCP_PORT = 666
 BUFFER_SIZE = 20  # Normally 1024, but we want fast response
 
