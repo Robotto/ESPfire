@@ -40,11 +40,16 @@ void setup() {
 }
 
 unsigned long lastGet = 0;
-unsigned long loopDelay = 60000; //every minute
+unsigned long loopDelay = 30000; //every minute
 void loop() {
 
-  if(millis()>lastGet+loopDelay) getIt();
-  lastGet = millis();
+  if(millis()>lastGet+loopDelay)
+  	{
+  		getIt();
+  		lastGet = millis();
+  	}
+
+  yield();
 
 }
 
@@ -53,7 +58,7 @@ void getIt()
   //String vindchillString;
   //float vindchill;
   int linecounter=0;
-  String lines[2]="";
+  String lines[3]="";
 
   Serial.print("connecting to ");
   Serial.println(host);
@@ -71,12 +76,17 @@ void getIt()
   // Read all the lines of the reply from server and print them to Serial
   while(client.available()){
     lines[linecounter++] = client.readStringUntil('\r');
-    Serial.println(lines[linecounter-1]);
   }
 
   if(lines[0]!="")
   {
-  Serial.println("DATA!!");
+  Serial.println("DATA:");
+  Serial.print("line0: ");
+  Serial.println(lines[0]);
+  Serial.print("line1: ");
+  Serial.println(lines[1]);
+  Serial.print("line2: ");
+  Serial.println(lines[2]);
   }
 
   Serial.println();
