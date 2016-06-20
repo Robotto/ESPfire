@@ -55,7 +55,7 @@ while True:
         event, timestamp = getNotifications()
         txString = str(event[15:-16])+'\r'+time.strftime('%d/%m-%Y', timestamp)+'\r'+time.strftime('%H:%M:%S', timestamp)+'\r'
         conn.send(txString)#+'\n')  # echo
-        print 'TX:', txString
+        print 'TX:', txString.replace('\r','\r\n')
         print 'Client disconnected.'
         print '--------------------------'
         conn.close()
